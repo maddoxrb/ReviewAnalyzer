@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - Amazon Review Analyzer</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+  <style>
+    .dark-theme {
+      background-color: #1a202c;
+      color: #cbd5e0;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background-color: #2d3748;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar a {
+      color: #cbd5e0;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      transition: color 0.3s;
+    }
+
+    .navbar a:hover {
+      color: #63b3ed;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #63b3ed;
+    }
+
+    .navbar .menu {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .about-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 70vh;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .about-section h1 {
+      font-size: 3rem;
+      color: #63b3ed;
+      margin-bottom: 2rem; /* Increased space below title */
+      margin-top: 10rem; 
+    }
+
+    .about-section p {
+      font-size: 1.25rem;
+      color: #cbd5e0;
+      max-width: 800px;
+      margin-bottom: 2rem; /* Increased bottom margin for paragraphs */
+    }
+
+    @media (max-width: 768px) {
+      .navbar .menu {
+        flex-direction: column;
+        display: none;
+      }
+
+      .navbar .menu.show {
+        display: flex;
+      }
+
+      .navbar .hamburger {
+        display: block;
+        cursor: pointer;
+      }
+
+      .navbar .hamburger div {
+        width: 25px;
+        height: 2px;
+        background-color: #cbd5e0;
+        margin: 5px;
+        transition: all 0.3s;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .navbar .hamburger {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body class="dark-theme">
+  <nav class="navbar">
+    <div class="logo">Amazon Review Analyzer</div>
+    <div class="menu">
+      <a href="/">Home</a>
+      <a href="about.html">About</a>
+      <a href="analyze.html">Analyze</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="hamburger" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </nav>
+  <div class="about-section">
+    <h1>Hate Sifting Through Product Reviews?</h1>
+    <p class="mb-8">Welcome to Amazon Review Analyzer, a powerful tool designed to help product managers gain valuable insights from Amazon product reviews. Reading through thousands of reviews is not only time-consuming but also impractical. Our tool leverages data science to process and analyze reviews, providing you with meaningful statistics and visualizations.</p>
+    <p class="mb-8">Data science plays a critical role in product management by transforming vast amounts of raw data into actionable insights. These insights are invaluable throughout the product lifecycle, helping you to understand customer sentiment, identify key themes, and monitor product performance.</p>
+    <p class="mb-8">Incorporating these insights into product management methodologies, such as Agile, can significantly enhance your decision-making process. Agile methodologies emphasize iterative development, customer feedback, and continuous improvement. By using our tool, you can quickly assess customer feedback and make informed decisions that align with your Agile practices, ensuring that your product evolves to meet customer needs effectively.</p>
+    <p class="mb-8">Join us on our mission to streamline the review analysis process and empower product managers with the insights they need to succeed.</p>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.querySelector('.navbar .menu');
+      menu.classList.toggle('show');
+    }
+  </script>
+</body>
+</html>
+

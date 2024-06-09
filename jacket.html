@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon Review Analyzer</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+  <style>
+    .dark-theme {
+      background-color: #1a202c;
+      color: #cbd5e0;
+    }
+
+    .container {
+      max-width: 75%;
+      margin: auto;
+      background-color: #2d3748;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 80px; /* Add buffer */
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .container:hover {
+      transform: translateY(-10px);
+    }
+
+    .title {
+      text-align: center;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #63b3ed;
+    }
+
+    .info-section {
+      background-color: #63b3ed;
+      display: flex;
+      justify-content: space-between;
+      border: 6px solid #000000;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      align-items: stretch; /* Ensures the content fills the height */
+      transition: transform 0.3s ease-in-out; /* Add transition for smooth effect */
+    }
+
+    .info-section:hover {
+      transform: scale(1.05); /* Zoom in slightly on hover */
+    }
+
+    .info-text {
+      max-width: 60%;
+      color: #000000;
+      font-size: 1.2rem; /* Increased font size */
+      margin-top: 0; /* Remove top margin */
+      margin-bottom: 0; /* Remove bottom margin */
+    }
+
+    .info-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .info-subtext ul {
+      list-style-type: disc;
+      padding-left: 1.3rem;
+    }
+
+    .info-image {
+      width: 35%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .info-image img {
+      border: 4px solid #000000;
+      border-radius: 10px;
+      width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .stars {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .stars img {
+      width: 30%;
+      height: 100%;
+      margin-right: 5px;
+    }
+
+    .text-content {
+      margin-top: 1rem;
+    }
+
+    .heading {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-top: 1rem;
+      color: #63b3ed;
+    }
+
+    .paragraph {
+      margin-top: 0.5rem;
+    }
+
+    .slick-slide {
+      display: flex;
+      justify-content: center;
+    }
+
+    .slick-slide img {
+      width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .slider-content {
+      position: relative;
+      overflow: hidden;
+      border: 4px solid #000000;
+      border-radius: 15px;
+    }
+
+    .slider-content img {
+      transition: filter 0.3s ease-in-out;
+    }
+
+    .slider-content:hover img {
+      filter: blur(3px);
+    }
+
+    .slider-info {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      color: #cbd5e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      padding: 1rem;
+      font-size: 1rem;
+    }
+
+    .slider-content:hover .slider-info {
+      opacity: 1;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .card {
+      position: relative;
+      background-color: #1a202c;
+      padding: 1rem;
+      border: 4px solid #000000;
+      border-radius: 10px;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .card p {
+      margin: 0;
+    }
+
+    .card-content {
+      transition: filter 0.3s ease-in-out;
+    }
+
+    .card:hover .card-content {
+      filter: blur(3px);
+    }
+
+    .card-info {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      color: #cbd5e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      padding: 1rem;
+      font-size: 1rem;
+    }
+
+    .card:hover .card-info {
+      opacity: 1;
+    }
+
+    .wordcloud-container,
+    .avg-rating-variation-container {
+      margin-top: 2rem;
+      width: 100%;
+      border: 6px solid #000000;
+      border-radius: 15px;
+      text-align: center;
+      position: relative;
+    }
+
+    .wordcloud-container img {
+      width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: filter 0.3s ease-in-out;
+    }
+
+    .wordcloud-container:hover img {
+      filter: blur(3px);
+    }
+
+    .wordcloud-info {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      color: #cbd5e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      padding: 1rem;
+      font-size: 1rem;
+    }
+
+    .wordcloud-container:hover .wordcloud-info {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="dark-theme p-6 mt-10">
+  <div class="container">
+    <h1 class="title"> <strong>Your Product Analysis</strong></h1>
+    
+    <div class="info-section">
+      <div class="info-text">
+        <div class="info-title">
+          Ebossy Women's See Through Floral Embroidery Lace Crop Denim Jacket Ripped Distressed Jean Jacket
+        </div>
+        <div class="stars">
+          <img src="static/jacket_four_stars.png" alt="Star">
+
+        </div>
+        <div class="info-subtext">
+          <ul>
+            <strong>227 ratings <br></strong>
+            <br>
+            
+            <li><strong>Price:</strong> $37.88<br></li>
+            <li><strong>Recommended size based on millions of customer orders and reviews:</strong> Small</li>
+            <li><strong>Fabric type:</strong> Denim - 100% Cotton, Lace - 100% Polyester</li>
+            <li><strong>Design:</strong> Turn down collar, button-flap chest pockets and side-entry pockets, long sleeves with ripped holes, stylish cutout and lace mesh patchwork design, frayed edges and distressed details</li>
+            <li><strong>Occasions:</strong> Casual wear, party, club, date, vacation, etc. Suitable for spring, summer and fall</li>
+          </ul>
+        </div>
+      </div>
+      <div class="info-image">
+        <img src="static/jacket_jacket.png" alt="Analysis Image">
+      </div>
+    </div>
+      
+    
+    <div id="carouselContainer" class="mt-20">
+      <div id="sliderSyncingNav" class="js-slick-carousel u-slick mb-2">
+        <div class="js-slide">
+          <div class="slider-content">
+            <img class="img-fluid" src="static/jacket_rating_distribution.png" alt="Rating Distribution">
+            <div class="slider-info">This chart shows the distribution of ratings given by customers. It was created by plotting the frequency of each rating from 1 to 5. Understanding this distribution helps product managers identify overall customer satisfaction and areas needing improvement.</div>
+          </div>
+        </div>
+        <div class="js-slide">
+          <div class="slider-content">
+            <img class="img-fluid" src="static/jacket_sentiment_distribution.png" alt="Sentiment Distribution">
+            <div class="slider-info">This chart depicts the distribution of sentiments expressed in the reviews. It was created using sentiment analysis to categorize reviews into positive, neutral, and negative sentiments. This helps product managers understand customer emotions and feedback more deeply.</div>
+          </div>
+        </div>
+        <div class="js-slide">
+          <div class="slider-content">
+            <img class="img-fluid" src="static/jacket_avg_rating_variation.png" alt="Average Rating for Each Variation">
+            <div class="slider-info">This bar chart shows the average rating for each variation of the product. It helps in identifying which variations are more popular and received better by customers. Product managers can use this information to optimize product offerings.</div>
+          </div>
+        </div>
+        <div class="js-slide">
+          <div class="slider-content">
+            <img class="img-fluid" src="static/jacket_time_series.png" alt="Time Series Analysis">
+            <div class="slider-info">This time series analysis shows the average rating over time. It was created by plotting the monthly average ratings. This helps product managers understand trends and the impact of changes or events on customer satisfaction.</div>
+          </div>
+        </div>
+        <div class="js-slide">
+          <div class="slider-content">
+            <img class="img-fluid" src="static/jacket_location_bar.png" alt="Location Distribution">
+            <div class="slider-info">This pie chart represents the proportion of reviewers from different locations. It helps product managers understand the geographical distribution of customers, which is useful for targeted marketing and identifying regional preferences.</div>
+          </div>
+        </div>
+      </div>
+      <div id="sliderSyncingThumb" class="js-slick-carousel u-slick u-slick--gutters-1 u-slick--transform-off mt-4">
+        <div class="js-slide">
+          <img class="img-fluid" src="static/jacket_rating_distribution.png" alt="Rating Distribution">
+        </div>
+        <div class="js-slide">
+          <img class="img-fluid" src="static/jacket_sentiment_distribution.png" alt="Sentiment Distribution">
+        </div>
+        <div class="js-slide">
+          <img class="img-fluid" src="static/jacket_avg_rating_variation.png" alt="Average Rating for Each Variation">
+        </div>
+        <div class="js-slide">
+          <img class="img-fluid" src="static/jacket_time_series.png" alt="Time Series Analysis">
+        </div>
+        <div class="js-slide">
+          <img class="img-fluid" src="static/jacket_location_bar.png" alt="Location Distribution">
+        </div>
+      </div>
+    </div>
+    
+    <div id="textContainer" class="text-content mt-4 grid">
+      <div class="card">
+        <div class="card-content">
+          <h2 class="heading"><strong>Most Helpful Review</strong></h2>
+          <p class="paragraph"><strong>Title:</strong> Great Product</p>
+          <p class="paragraph"><strong>Rating:</strong> 5</p>
+          <p class="paragraph"><strong>Body:</strong> I love this jacket. It's very warm and comfortable. Highly recommend!</p>
+          <p class="paragraph"><strong>Helpful Count:</strong> 10</p>
+          <p class="paragraph"><strong>Author:</strong> John Doe</p>
+          <p class="paragraph"><strong>Location:</strong> United States</p>
+        </div>
+        <div class="card-info">
+          This review was marked as helpful 10 times by other users, indicating that it provides valuable insights. Understanding what other customers find helpful in a review can guide you in addressing common concerns and improving product descriptions.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <h2 class="heading"><strong>Most Common Words in All Reviews:</strong></h2>
+          <p class="paragraph"><strong>jacket</strong> </p>
+          <p class="paragraph"><strong>warm</strong> </p>
+          <p class="paragraph"><strong>comfortable</strong> </p>
+          <p class="paragraph"><strong>fit</strong> </p>
+          <p class="paragraph"><strong>love</strong> </p>
+        </div>
+        <div class="card-info">
+          These words came up most frequently in customer reviews. 
+        </div>
+      </div>
+    
+      
+      <div class="card">
+        <div class="card-content">
+          <h2 class="heading"><strong>Recurring Positive Topics</strong></h2>
+          <p class="paragraph"><strong>love:</strong> 0.5</p>
+          <p class="paragraph"><strong>great:</strong> 0.4</p>
+          <p class="paragraph"><strong>comfortable:</strong> 0.3</p>
+          <p class="paragraph"><strong>warm:</strong> 0.3</p>
+          <p class="paragraph"><strong>recommend:</strong> 0.4</p>
+        </div>
+        <div class="card-info">
+          Positive reviews are identified using sentiment analysis. By analyzing the words in the top 25% most positive reviews, we extract terms that reflect the best aspects of your product. This helps in highlighting key features that resonate well with customers and can be emphasized in marketing strategies.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-content">
+          <h2 class="heading"><strong>Recurring Negative Topics</strong></h2>
+          <p class="paragraph"><strong>poor:</strong> -0.5</p>
+          <p class="paragraph"><strong>disappointed:</strong> -0.4</p>
+          <p class="paragraph"><strong>bad:</strong> -0.4</p>
+          <p class="paragraph"><strong>uncomfortable:</strong> -0.3</p>
+          <p class="paragraph"><strong>return:</strong> -0.3</p>
+        </div>
+        <div class="card-info">
+          Negative reviews are identified using sentiment analysis. By focusing on the words in the bottom 25% most negative reviews, we extract terms that highlight areas of concern for customers. This information is crucial for identifying product flaws and improving customer satisfaction by addressing common issues.
+        </div>
+      </div>
+      
+    </div>
+    
+    <div id="wordcloudContainer" class="wordcloud-container">
+      <img class="img-fluid" src="static/jacket_wordcloud.png" alt="Word Cloud" style="width: 100%;">
+      <div class="wordcloud-info">This word cloud represents the most frequently mentioned words in customer reviews. It was created by combining all review texts and generating a visual representation of word frequency. Product managers can quickly identify the key themes and aspects customers focus on, helping in product feature optimization and marketing strategies.</div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('#sliderSyncingNav').slick({
+        infinite: true,
+        arrows: true,
+        asNavFor: '#sliderSyncingThumb',
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        adaptiveHeight: true,
+      });
+
+      $('#sliderSyncingThumb').slick({
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        asNavFor: '#sliderSyncingNav',
+        focusOnSelect: true,
+        responsive: [
+          {
+            breakpoint: 992,
+            settings: {
+              slidesToShow: 2
+            }
+          },
+          {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: 1
+            }
+          },
+          {
+            breakpoint: 554,
+            settings: {
+              slidesToShow: 1
+            }
+          }
+        ]
+      });
+    });
+  </script>
+</body>
+</html>
